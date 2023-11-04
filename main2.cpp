@@ -1,24 +1,23 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <time.h>
+#include <windows.h>
+
 
 size_t GetCurrentDay() {
-    struct tm buf;
-    time_t t = time(NULL);
-    return localtime(&t)->tm_mday;
+    SYSTEMTIME st;
+    GetLocalTime(&st);
+    return st.wDay;
 }
 
-template <typename T>
-void FillArray(T& arr, const size_t& array_size) {
+
+void FillArray(int* const arr, const size_t& array_size) {
     for (int i = 0; i < array_size; ++i) {
         for (int j = 0; j < array_size; ++j) {
-            arr[i][j] = i + j;
+            *(arr + i + j) = i + j;
         }
     }
 }
 
-template <typename T>
-void PrintArray(const T& arr, const size_t& array_size) {
+void PrintArray(const int* const arr, const size_t& array_size) {
     for (int i = 0; i < array_size; ++i) {
         bool space = true;
         for (int j = 0; j < array_size; ++j) {
@@ -26,19 +25,18 @@ void PrintArray(const T& arr, const size_t& array_size) {
                 std:: cout << " ";
             }
             space = false;
-            std:: cout << arr[i][j];
+            std:: cout << *(arr + i + j);
         }
         std::cout << std::endl;
     }
 }
 
-template <typename T>
-size_t GetSumByDay(size_t N, const T& arr) {
+size_t GetSumByDay(size_t N, const int* arr) {
     size_t sum = 0;
     size_t line_index = GetCurrentDay() % N;
 
     for (size_t k = 0; k < N; ++k) {
-        sum += arr[line_index][k];
+        sum += *(arr + line_index + k);
     }
 
     return sum;
@@ -49,10 +47,9 @@ int main() {
     const int N = 5;
     int arr[N][N];
 
-    FillArray(arr, N);
-    PrintArray(arr, N);
+    FillArray((int*)arr, N);
+    PrintArray((int*)arr, N);
     
-    std::cout << "\nThe sum is " << GetSumByDay(N, arr);
+    std::cout << "\nThe sum is " << GetSumByDay(N, (int*)arr);
     return 0;
 }
-
