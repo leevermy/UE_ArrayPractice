@@ -31,7 +31,7 @@ void PrintArray(const int* const arr, const size_t& array_size) {
     }
 }
 
-size_t GetSumByDay(size_t N, const int* arr) {
+size_t GetSumByDay(size_t N, const int* const arr) {
     size_t sum = 0;
     size_t line_index = GetCurrentDay() % N;
 
